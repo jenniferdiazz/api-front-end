@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from '../router/index'
 
 Vue.use(Vuex)
 
@@ -34,6 +35,8 @@ export default new Vuex.Store({
           //para almaacenar las credenciales usamos localstorage
           localStorage.setItem('token2', resDB.data.token)
           alert("Ha iniciado sesión")
+          router.push({name: 'About'})
+          
       }catch(error){
         console.log(error)
         alert("Ha ocurrido un error")
@@ -54,6 +57,7 @@ export default new Vuex.Store({
       localStorage.removeItem('token')
       commit('setToken', null)
       alert("Ha cerrado sesión")
+      router.push({name: 'Home'})
 
     }
   },

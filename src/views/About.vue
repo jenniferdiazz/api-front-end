@@ -1,27 +1,39 @@
 <template>
-  <div class="about">
+  <div class="container">
     <h1>Ruta protegida</h1>
-    {{token}}
+    <button @click="cerrarSesion" class="btn btn-secondary">Logout</button>
+    
      <div class="row">
+       <div class="col-sm-12 col-md-12" style="padding-bottom:50px">Current session: {{token}}</div>
+       <div class="col-sm-8 col-md-7" >
     <form @submit.prevent="listar()">
-            <h3 class="text-center">Pide un deseo</h3>
-            <div class="text-center">
+      <div class="text-center col-md-8" style="border: black 2px solid; padding:40px" >
+            <h3 class="text-center">Events request</h3>
+            <p>Request the events for a car(VIN)</p>
+            
             <input type="text" placeholder="Ingrese el VIN" class="form-control m-2" v-model="vehiculo.vin">
-            <button type="submit" class="btn btn-block btn-success">Buscar</button>
+            <button type="submit" class="btn btn-success">Send</button>
             
             </div>
     </form>
-    </div>
+       </div>
+   
+   
+      <div class="col-sm-4 col-md-5">
     <div clas="" v-if="ver">
     {{vehiculos}}
+    </div>
+    </div>
     </div>
 
    
   </div>
 </template>
 <script>
+
  //El map state siempre va en una propiedad computada
 import {mapState} from 'vuex'
+import {mapActions} from 'vuex'
 
 export default{
   data(){
@@ -35,6 +47,7 @@ export default{
     ...mapState(['token'])
   },
   methods:{
+    ...mapActions(['cerrarSesion']),
     async listar(){
       try{
         //por defecto la solicitud es get
@@ -55,18 +68,7 @@ export default{
         console.log(error)
       }
     },
-  // listar(){
-  //   //this.ver=!this.ver
-  //       this.axios.get(`/?vin=${this.vehiculo.vin}`)
-  //       .then((response)=>{
-  //         console.log(this.vehiculo.vin)
-  //           this.vehiculos= response.data;
-  //       })
-  //       .catch(e=>{
-  //         console.log(this.vehiculo.vin)          
-  //           console.log('error'+e)
-  //       })
-  //   },
+ 
   //created inicializa una funcion
   created(){
     this.datosProtegidos();
