@@ -56,7 +56,7 @@ export default new Vuex.Store({
     cerrarSesion({commit}){
       localStorage.removeItem('token')
       commit('setToken', null)
-      alert("Ha cerrado sesión")
+      console.log("Ha cerrado sesión")
       router.push({name: 'Home'})
 
     }
