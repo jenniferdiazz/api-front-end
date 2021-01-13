@@ -9,10 +9,14 @@
     <form @submit.prevent="listar()">
       <div class="text-center col-md-8" style="border: black 2px solid; padding:40px" >
             <h3 class="text-center">Events request</h3>
+            <h5>Filters</h5>
             <p>Request the events for a car(VIN)</p>
             <label for="">VIN  : </label>
             <input type="text" placeholder="Ingrese el VIN" class="form-control m-2" v-model="vehiculo.vin">
-
+            <label for="">Patente  : </label>
+            <input type="text" placeholder="Ingrese la patente" class="form-control m-2" v-model="vehiculo.patente">
+            <hr>
+            <h5>Date filter</h5>
             <label for="">From date  : </label>
             <input type="text" placeholder="Ingrese fecha inicial" class="form-control m-2" v-model="vehiculo.startedDate">
             <p>Format: YYYY-MM-DD HH:MM:SS</p>
@@ -68,9 +72,15 @@ export default{
           this.vehiculo.startedDate=""
           this.vehiculo.endDate=""
         }
-        console.log(this.vehiculo.startedDate)
+        if(this.vehiculo.patente==undefined){
+          this.vehiculo.patente=""
+        }
+        if(this.vehiculo.vin==undefined){
+          this.vehiculo.vin=""
+        }
         //por defecto la solicitud es get
-        const res = await fetch(`http://localhost:3000/api/?vin=${this.vehiculo.vin}&startedDate=${this.vehiculo.startedDate}&endDate=${this.vehiculo.endDate}`,{
+        this.vehiculos="Cargando..."
+        const res = await fetch(`http://localhost:3000/api/?vin=${this.vehiculo.vin}&startedDate=${this.vehiculo.startedDate}&endDate=${this.vehiculo.endDate}&patente=${this.vehiculo.patente}`,{
           headers:{
              'Content-Type': 'application/json',
              //esto lee del servidor
