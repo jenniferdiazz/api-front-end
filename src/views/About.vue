@@ -1,6 +1,8 @@
 <template>
   <div class="container">
     
+    
+    
     <button @click="cerrarSesion" class="btn btn-secondary">Logout</button>
     <h3>Current session: </h3>
      <div class="row">
@@ -32,12 +34,18 @@
    
    
       <div class="col-sm-4 col-md-5">
+        
     <div clas="" v-if="ver">
       <h3>Require: </h3>
       {{vehiculo}}
 
       <h3>Response: </h3>
-    {{vehiculos}}
+      <pre>{{vehiculos}}</pre>
+      <!-- <vue-json-pretty
+      :data="this.vehiculos"
+      > 
+    </vue-json-pretty> -->
+   
     </div>
     </div>
     </div>
@@ -50,10 +58,14 @@
  //El map state siempre va en una propiedad computada
 import {mapState} from 'vuex'
 import {mapActions} from 'vuex'
+import Vue from 'vue'
+import VueJsonPretty from 'vue-json-pretty'
+Vue.component("vue-json-pretty", VueJsonPretty.default);
 
 export default{
   data(){
     return{
+      
       vehiculo:{},
       ver:false,
       vehiculos:{}
@@ -62,11 +74,16 @@ export default{
     computed:{
     ...mapState(['token'])
   },
+   components: {
+    VueJsonPretty
+  },
+  
   methods:{
+    
     ...mapActions(['cerrarSesion']),
     async listar(){
       try{
-        console.log("holaaaaaa")
+        console.log("Send...")
         
         if(this.vehiculo.startedDate==undefined && this.vehiculo.endDate==undefined){
           this.vehiculo.startedDate=""
@@ -89,10 +106,8 @@ export default{
         })
         this.ver=true
         const dataDB = await res.json()
-        console.log(dataDB)
-        console.log(this.vehiculo.vin)
-        this.vehiculos= dataDB;
-
+      
+        this.vehiculos= dataDB
       }catch(error){
         console.log(error)
       }
