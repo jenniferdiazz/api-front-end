@@ -8,15 +8,33 @@
      <div class="row">
        <div class="col-sm-12 col-md-12" style="padding-bottom:50px"> {{token}}</div>
        <div class="col-sm-8 col-md-7" >
-    <form @submit.prevent="listar()">
-      <div class="text-center col-md-8" style="border: black 2px solid; padding:40px" >
+    <form @submit.prevent="listar()" >
+      <div class="col-md-8" style="border: black 1px solid; padding:40px; text-align: left " >
             <h3 class="text-center">Events request</h3>
+            <hr>
             <h5>Filters</h5>
-            <p>Request the events for a car(VIN)</p>
+            
+            <p>Request the events for a car(VIN), or patent</p>
             <label for="">VIN  : </label>
             <input type="text" placeholder="Ingrese el VIN" class="form-control m-2" v-model="vehiculo.vin">
             <label for="">Patente  : </label>
-            <input type="text" placeholder="Ingrese la patente" class="form-control m-2" v-model="vehiculo.patente">
+            <input type="text" placeholder="Ingrese la patente" class="form-control m-2" v-model="vehiculo.patente"><br>
+            <label>Event type: </label>
+            <div class="input-field">
+              
+              
+              <select class="form-select" style="width: 60%; height:25%; margin-left:15px" @change="handleChange" >
+                <option value="" selected >Todos</option>
+                <option value="25">GPS</option>
+                <option value="54">Motor</option>
+              </select>
+
+    
+              <br>
+               
+            </div>
+            {{tipo}}
+            <br>
             <hr>
             <h5>Date filter</h5>
             <label for="">From date  : </label>
@@ -25,9 +43,14 @@
 
             <label for="">To date  : </label>
             <input type="text" placeholder="Ingrese fecha final" class="form-control m-2" v-model="vehiculo.endDate">
-            <button type="submit" class="btn btn-success">Send</button>
-            <p>Format: YYYY-MM-DD HH:MM:SS</p>
             
+            <p>Format: YYYY-MM-DD HH:MM:SS</p>
+            <br>
+            <hr>
+            <div class="text-center">
+              <button type="submit" class="btn btn-success">Send</button>
+              </div>
+
             </div>
     </form>
        </div>
@@ -40,11 +63,11 @@
       {{vehiculo}}
 
       <h3>Response: </h3>
-      <pre>{{vehiculos}}</pre>
-      <!-- <vue-json-pretty
+      <!-- <pre>{{vehiculos}}</pre> -->
+      <vue-json-pretty
       :data="this.vehiculos"
       > 
-    </vue-json-pretty> -->
+    </vue-json-pretty>
    
     </div>
     </div>
@@ -68,7 +91,8 @@ export default{
       
       vehiculo:{},
       ver:false,
-      vehiculos:{}
+      vehiculos:{},
+      tipo:""
     }
     },
     computed:{
@@ -79,6 +103,12 @@ export default{
   },
   
   methods:{
+    handleChange(e) {     
+      console.log(e.target.value)
+      this.tipo=e.target.value
+           
+       },
+     
     
     ...mapActions(['cerrarSesion']),
     async listar(){
