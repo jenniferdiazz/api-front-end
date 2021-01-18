@@ -12,11 +12,11 @@ This command is required for every session in order to identify the user for the
       <!-- v-model relaciona los input con la data que tenemos en vue-->
     
       <label for="">User: </label>
-      <input type="text" placeholder="Usuario" v-model="usuario.Alias" style="margin-right:50px">
+      <input type="text"  v-model="usuario.Alias" style="margin-right:50px">
      
   
       <label for="">Password: </label>
-      <input type="password" placeholder="password" v-model="usuario.Contrasena" style="margin-right:50px">
+      <input type="password"  v-model="usuario.Contrasena" style="margin-right:50px">
       
       <div>
       <button type="submit "  class="btn btn-success" style="margin-top:50px">Send</button>
@@ -41,8 +41,8 @@ export default {
   data(){
     return{
       usuario:{
-        Alias:'cbaez',
-        Contrasena:'inicio01'
+        // Alias:'cbaez',
+        // Contrasena:'inicio01'
       }
     }
   },

@@ -16,7 +16,7 @@ export default new Vuex.Store({
   actions: {
     //lo segundo es el componente que recibe. dentro del login se hace la solicitud
     async login({commit}, usuario){
-      console.log(usuario)
+      
       try{
           const res= await fetch('http://localhost:3000/api/login',{
             method: 'POST',
@@ -28,7 +28,7 @@ export default new Vuex.Store({
 
           //viene la respuesta de nuestra base de datos
           const resDB = await res.json()
-          console.log(resDB)
+          
           
           //el commit llama una mutacion, lo segundo es lo que le enviaremos
           commit('setToken', resDB.data.token)
@@ -39,7 +39,7 @@ export default new Vuex.Store({
           
       }catch(error){
         console.log(error)
-        alert("Ha ocurrido un error")
+        alert("El usuario o contraseña no coinciden")
 
       }
 
