@@ -6,7 +6,7 @@
       <div class="col-sm-12 col-md-12" style="padding-bottom:50px"> 
         {{token}}
       </div>
-      <div class="col-sm-12 col-md-12">{{carga}}</div>
+      <div class="col-sm-12 col-md-12"></div>
       <div class="col-md-4 col-lg-4" style="margin-right:80px">
           <form @submit.prevent="listar()" >
             <div class="" style="border: black 1px solid; padding:40px; text-align: left " >
@@ -31,33 +31,34 @@
               <hr>
               <h5>Date filter</h5>
               <label for="">From date  : </label>
-              <input type="text" placeholder="Ingrese fecha inicial" class="form-control m-2" v-model="vehiculo.startedDate">
+              <input type="text" placeholder="2020-01-01 00:00:00" class="form-control m-2" v-model="vehiculo.startedDate">
               <p>Format: YYYY-MM-DD HH:MM:SS</p>
               <label for="">To date  : </label>
-              <input type="text" placeholder="Ingrese fecha final" class="form-control m-2" v-model="vehiculo.endDate">
+              <input type="text" placeholder="2020-12-12 00:00:00" class="form-control m-2" v-model="vehiculo.endDate">
               <p>Format: YYYY-MM-DD HH:MM:SS</p>
-              <br>
               <hr>
               <div class="text-center">
-                <button type="submit" class="btn btn-success">Send</button>
+                <button type="submit" class="btn btn-success" @click="handleClick">Send</button>
               </div>
             </div>
           </form>
       </div>
         
     
-      <div clas="col-md-8 col-lg-8" style="text-align: left" v-if="ver">
+      <div clas="col-md-8 col-lg-8" style="text-align: left">
+    
         <div>
-          <h3>Require: </h3>
+          <h3>Request: </h3>
           <pre>{{this.vehiculo}}</pre>
         </div>
         <div>
           <h3>Response: </h3>
           <!-- <pre>{{vehiculos}}</pre> -->
-          <vue-json-pretty
-          :data="this.vehiculos"
-          > 
-          </vue-json-pretty>
+          
+          <div>
+  <tree-view :data="this.vehiculos" :options="{maxDepth: 2, rootObjectKey: 'data'}"></tree-view>
+</div>
+         
         </div>
       </div>
     </div>
@@ -69,31 +70,45 @@
 import {mapState} from 'vuex'
 import {mapActions} from 'vuex'
 import Vue from 'vue'
-import VueJsonPretty from 'vue-json-pretty'
-Vue.component("vue-json-pretty", VueJsonPretty.default);
+import TreeView from "vue-json-tree-view"
+Vue.use(TreeView)
 
 export default{
   data(){
     return{
       
       vehiculo:{},
-      ver:false,
+      
       vehiculos:{},
-      carga:"",
+     
    
     }
     },
     computed:{
     ...mapState(['token'])
   },
-   components: {
-    VueJsonPretty
+ 
+  created() {
+
+ this.vehiculo.generico=""
+  this.vehiculo.vin= ""
+ this.vehiculo.startedDate= ""
+  this.vehiculo.endDate= ""
+  this.vehiculo.patente= ""
+
+    console.log('created')
+
   },
   
   methods:{
     handleChange(e) {     
       console.log(e.target.value)
       this.vehiculo.generico=e.target.value
+           
+       },
+       handleClick(e) {     
+      console.log(e.target.value)
+      this.vehiculos="Loading...."
            
        },
      
@@ -114,7 +129,7 @@ export default{
           this.vehiculo.vin=""
         }
         //por defecto la solicitud es get
-        this.carga="Cargando..."
+        //this.carga="Cargando..."
         const res = await fetch(`http://localhost:3000/api/?vin=${this.vehiculo.vin}&startedDate=${this.vehiculo.startedDate}&endDate=${this.vehiculo.endDate}&patente=${this.vehiculo.patente}&generico=${this.vehiculo.generico}`,{
           headers:{
              'Content-Type': 'application/json',
@@ -122,8 +137,9 @@ export default{
             'auth-token': this.token
           }
         })
-        this.ver=true
-        this.carga=""
+        
+        //this.carga=""
+        
         const dataDB = await res.json()
       
         this.vehiculos= dataDB
@@ -139,3 +155,9 @@ export default{
 
 }
 </script>
+
+<style>
+  .tree-view-item-key {
+    font-weight: bold;
+}
+</style>
